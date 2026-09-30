@@ -1,11 +1,11 @@
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import RutaProtegida from './components/RutaProtegida.jsx'
-import Inicio from './pages/Inicio.jsx'
-import SalaEspera from './pages/SalaEspera.jsx'
-import Equipo from './pages/Equipo.jsx'
-import Retribuciones from './pages/Retribuciones.jsx'
-import NoEncontrada from './pages/NoEncontrada.jsx'
+import Inicio from './components/pages/Inicio.jsx'
+import SalaEspera from './components/pages/SalaEspera.jsx'
+import Equipo from './components/pages/Equipo.jsx'
+import Retribuciones from './components/pages/Retribuciones.jsx'
+import NoEncontrada from './components/pages/NoEncontrada.jsx'
 
 // App solo define las rutas: la lógica vive en pages, components y context.
 export default function App() {

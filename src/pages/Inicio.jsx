@@ -2,7 +2,7 @@ import { Badge, Button, Card, Col, Row } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import Seo from "../components/Seo.jsx"
 import StatCard from "../components/StatCard.jsx"
-import { useGuardia } from "../hooks/useApp.js"
+import { useGuardia } from "../../hooks/useApp.js"
 import { turnoActual } from "../utils/formato.js"
 
 export default function Inicio() {

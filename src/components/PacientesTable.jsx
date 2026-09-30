@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap"
-import PacienteRow from "./PacienteRow.jsx"
+import PacienteRow from "../components/PacienteRow.jsx"
 
 export default function PacientesTable({ pacientes, ...propsFila }) {
   return (

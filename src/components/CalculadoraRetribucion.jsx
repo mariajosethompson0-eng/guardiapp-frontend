@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Card, Col, Form, InputGroup, Row } from "react-bootstrap"
-import { DURACIONES, PERFILES, SUELDO_BASE } from "../data/constantes.js"
+import { DURACIONES, PERFILES, SUELDO_BASE } from "../components/data/constantes.js"
 import { formatoMoneda } from "../utils/formato.js"
 
 export default function CalculadoraRetribucion() {

@@ -7,7 +7,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import './index.css'
 import App from './App.jsx'
 import AuthProvider from './context/AuthProvider.jsx'
-import GuardiaProvider from './context/GuardiaProvider.jsx'
+import GuardiaProvider from './context/GuardiaProvider.js'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
