@@ -1,5 +1,5 @@
 import { Badge, Button } from "react-bootstrap"
-import TriageBadge from "../Pages/TriageBadge.jsx"
+import TriageBadge from "../components/Pages/TriageBadge.jsx"
 import { ESTADO_UI, VARIANTES_TEXTO_OSCURO } from "../data/constantes.js"
 import { formatoHora } from "../utils/formato.js"
 

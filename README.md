@@ -22,7 +22,7 @@ Migración de GuardiasApp (repo 1: HTML, CSS y JavaScript) a una aplicación de 
 | React Router | Rutas de la aplicación |
 | React Helmet Async | Metadatos SEO por página |
 | Git y GitHub | Control de versiones (`main`, `dev`, `feature/*`) |
-| Netlify | Despliegue |
+| Vercel | Despliegue |
 
 ## ▶️ Cómo ejecutarlo
 
@@ -99,7 +99,7 @@ Una SPA entrega un único HTML, así que el SEO se resuelve en dos capas:
 - Un único `<h1>` por página y jerarquía de títulos ordenada.
 - `lang="es"`, enlace "Saltar al contenido" y `aria-label` en regiones.
 - `noindex` en páginas que no deben aparecer en buscadores (calculadora, 404 y acceso restringido).
-- `public/_redirects` para que Netlify sirva la app al entrar directo a cualquier ruta.
+- `vercel.json` con una regla de reescritura para que Vercel sirva la app al entrar directo a cualquier ruta.
 
 ### Etiquetas de `index.html` (18 `<meta>` + 3 elementos)
 
@@ -139,15 +139,20 @@ Una SPA entrega un único HTML, así que el SEO se resuelve en dos capas:
 | `og:title`, `og:description`, `og:url` | Datos de la ruta |
 | `twitter:title`, `twitter:description` | Datos de la ruta |
 
-## 🌐 Despliegue en Netlify
+## 🌐 Despliegue en Vercel
 
+Vercel detecta Vite automáticamente. La configuración equivale a:
+
+- **Framework preset:** Vite
 - **Build command:** `npm run build`
-- **Publish directory:** `dist`
-- `public/_redirects` contiene `/*  /index.html  200`.
+- **Output directory:** `dist`
+- `vercel.json` reescribe todas las rutas a `index.html`; sin él, entrar directo a `/equipo` da 404.
+
+Cada Pull Request genera una URL de vista previa y cada merge a `main` publica en producción.
 
 ### ⚠️ Antes de publicar
 
-1. Reemplazá `https://guardiasapp.netlify.app` por la URL real en `index.html` y en la constante `SITIO` de `src/components/Seo.jsx`.
+1. Verificá la URL real del proyecto en Vercel (panel *Domains*). Si no es `https://guardiapp-frontend.vercel.app`, reemplazala en `index.html` y en la constante `SITIO` de `src/components/Seo.jsx`.
 2. Agregá la imagen `og-guardiasapp.png` (1200 × 630 px) dentro de `public/`.
 
 ## 🔄 Migración desde el repositorio 1
@@ -160,3 +165,4 @@ Una SPA entrega un único HTML, así que el SEO se resuelve en dos capas:
 | `main.js` (estado) | `context/` |
 | `main.js` (render con `innerHTML`) | Componentes con `.map()` |
 | `alert`, `confirm`, `prompt` | Toast y modales de React-Bootstrap |
+

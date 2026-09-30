@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async"
 import { useLocation } from "react-router-dom"
 
-const SITIO = "https://guardiasapp.netlify.app"
+const SITIO = "https://guardiapp-frontend.vercel.app"
 
 // SEO por página: título, descripción, canonical, Open Graph y Twitter.
 export default function Seo({ titulo, descripcion, noIndex = false }) {
