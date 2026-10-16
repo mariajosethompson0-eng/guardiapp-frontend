@@ -1,168 +1,101 @@
-# 🏥 GuardiasApp Frontend — React + Vite + React-Bootstrap
+# GuardiasApp
 
-Migración de GuardiasApp (repo 1: HTML, CSS y JavaScript) a una aplicación de una sola página con **React**, **Vite** y **React-Bootstrap**. Permite registrar pacientes, ordenar la sala de espera según el triage, ver al equipo de guardia y estimar retribuciones.
+Aplicación web para digitalizar la guardia médica: registro de pacientes, sala de espera ordenada por triage, gestión del equipo de guardia y cálculo de retribuciones. Desarrollada en React como migración de un proyecto HTML/Bootstrap.
 
-## 🎓 Información académica
+## Funcionalidades
 
-- **Institución:** Universidad Tecnológica Nacional (UTN FRT)
-- **Alumna:** María José Thompson
-- **Legajo:** 61026
-- **Modalidad:** Proyecto individual (SPA en React, sin backend)
-- **Repositorio 1 (versión estática):** GuardiasApp con HTML + CSS + JS
-- **Repositorio 2 (este):** migración progresiva a React + Vite
+- **Inicio:** resumen del estado del servicio (atendidos hoy, espera media, pacientes activos) y estadísticas de salud pública consumidas desde una API.
+- **Sala de espera:** alta de pacientes y ordenamiento por nivel de triage.
+- **Equipo médico:** listado y gestión de los médicos de guardia.
+- **Retribuciones:** calculadora de retribución, accesible solo con permisos.
+- **Login con roles:** administrador, recepcionista y médico, con permisos distintos por acción.
+- **Consumo de API pública:** estadísticas de COVID-19 con estado de carga y manejo de errores.
 
-## 🛠️ Tecnologías
+## Tecnologías
 
-| Tecnología | Uso |
-|---|---|
-| React | Interfaz basada en componentes reutilizables |
-| Vite | Servidor de desarrollo y build |
-| React-Bootstrap + Bootstrap 5.3 | Componentes y diseño (tema oscuro) |
-| Bootstrap Icons | Iconografía |
-| React Router | Rutas de la aplicación |
-| React Helmet Async | Metadatos SEO por página |
-| Git y GitHub | Control de versiones (`main`, `dev`, `feature/*`) |
-| Vercel | Despliegue |
+- React + Vite
+- React Router
+- React Bootstrap y Bootstrap Icons
+- Axios (peticiones HTTP)
+- SweetAlert2 (avisos al usuario)
+- React Helmet Async (metadatos y SEO)
+- Context API (`AuthProvider` y `GuardiaProvider`)
 
-## ▶️ Cómo ejecutarlo
+## Instalación
 
 ```bash
 git clone https://github.com/mariajosethompson0-eng/guardiapp-frontend.git
 cd guardiapp-frontend
 npm install
-npm run dev
 ```
 
-| Comando | Acción |
-|---|---|
-| `npm run dev` | Servidor de desarrollo |
-| `npm run build` | Genera la carpeta `dist` para producción |
-| `npm run preview` | Sirve el build localmente |
-| `npm run lint` | Revisa el código con ESLint |
-
-## 📁 Arquitectura
+## Estructura del proyecto
 
 ```
 src/
-├── main.jsx            Arranque y providers (Helmet, Router, Auth, Guardia)
-├── App.jsx             Solo define las rutas
-├── index.css           Paleta del tema (variables de Bootstrap)
-├── pages/              Una por ruta; arman la pantalla llamando componentes
-├── components/         Piezas reutilizables que reciben todo por props
-├── context/            Estado global (sesión y datos de la guardia)
-├── hooks/              useApp (useAuth, useGuardia) y useLocalStorage
-├── data/               Constantes, permisos y datos de ejemplo
-└── utils/              Formato de moneda, horas y turno
+├── components/   # componentes reutilizables (NavBar, modales, tablas, EstadisticasSalud, Seo)
+├── context/      # AuthProvider, GuardiaProvider y contexts.js
+├── data/         # constantes (permisos, perfiles, estados)
+├── hooks/        # useApp, useLocalStorage
+├── pages/        # Inicio, SalaEspera, Equipo, Retribuciones, NoEncontrada
+├── utils/        # funciones de formato
+├── App.jsx       # definición de rutas
+└── main.jsx      # punto de entrada
+```
+## SEO y metadatos
+
+El proyecto aplica estrategias de SEO para que los buscadores entiendan de qué trata cada página.
+
+### Metadatos por página
+
+Cada página define su propio título y descripción con el componente `Seo.jsx`, que usa `react-helmet-async` para modificar el `<head>`:
+
+```jsx
+<Seo
+  titulo="GuardiasApp | Recepción, Triage y Sala de Espera en Tiempo Real"
+  descripcion="GuardiasApp digitaliza la guardia médica: registra pacientes, ordena la sala de espera por triage y gestiona al equipo de guardia."
+/>
 ```
 
-**Principios aplicados**
+Esto genera, para cada ruta:
 
-- `App.jsx` es únicamente el orquestador de rutas.
-- Las `pages` no tienen lógica de negocio: consumen los contextos y pasan props a los componentes.
-- Los listados se generan con `.map()` y `key` estable.
-- Los valores calculados (indicadores, totales de la calculadora) se derivan al renderizar, sin `useEffect`.
-- Los formularios usan `Form` de React-Bootstrap con validación nativa y mensajes de error.
-- Los componentes de presentación (`MedicoCard`, `StatCard`, `TriageBadge`) no conocen el estado global.
+- `<title>`: título único que aparece en la pestaña y en los resultados de Google.
+- `<meta name="description">`: resumen que se muestra debajo del título en el buscador.
 
-## 🧭 Rutas
+En `index.html` están las metas generales del sitio:
 
-| Ruta | Página | Acceso | Indexable |
-|---|---|---|---|
-| `/` | Inicio y estado del servicio | Público | Sí |
-| `/sala-espera` | Admisión y lista de pacientes | Público (acciones según rol) | Sí |
-| `/equipo` | Equipo médico de guardia | Público (acciones según rol) | Sí |
-| `/retribuciones` | Calculadora de retribuciones | Administrador | No |
-| `*` | Error 404 | Público | No |
+```html
+<html lang="es">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+```
 
-## 👥 Roles
+### Estrategias aplicadas
 
-Cuentas de prueba, todas con la clave `1234`.
+- **Título y descripción únicos** en cada página, con palabras clave del tema (guardia médica, triage, sala de espera).
+- **Etiquetas semánticas:** `section`, `header`, `nav`, `main` y `footer` en lugar de `div` genéricos.
+- **Un solo `<h1>` por página**, con subtítulos ordenados (`h2`, `h3`).
+- **Atributo `lang="es"`** para indicar el idioma del contenido.
+- **Diseño responsive** con Bootstrap, que los buscadores valoran en celulares.
+- **Íconos decorativos con `aria-hidden="true"`** y texto descriptivo en enlaces y botones, para accesibilidad.
+- **Ruta 404** propia (`NoEncontrada`) para las URL inexistentes.
+- **Rendimiento:** build optimizado con Vite y carga de datos con estado de carga.
 
-| Usuario | Rol | Puede |
-|---|---|---|
-| `recepcion` | Recepcionista | Admitir, atender, finalizar y eliminar pacientes |
-| `medico` | Médico | Atender, finalizar y cambiar su estado de guardia |
-| `admin` | Administrador | Añadir y dar de baja médicos, usar la calculadora |
+## Flujo de trabajo con Git
 
-> El acceso es una simulación del lado del cliente con fines didácticos. Un sistema real debe autenticar en un servidor.
-
-## 🔎 Estrategia SEO
-
-Una SPA entrega un único HTML, así que el SEO se resuelve en dos capas:
-
-1. **Capa estática (`index.html`):** metadatos base, Open Graph, Twitter y datos estructurados. Están fijos porque los rastreadores de WhatsApp, Facebook y X **no ejecutan JavaScript** y solo leen este archivo.
-2. **Capa dinámica (`components/Seo.jsx`):** cada página declara su propio título, descripción y URL canónica con React Helmet Async. Google sí ejecuta JavaScript y toma estos valores por ruta.
-
-**Otros recursos**
-
-- HTML semántico: `header`, `nav`, `main`, `section`, `article`, `footer`.
-- Un único `<h1>` por página y jerarquía de títulos ordenada.
-- `lang="es"`, enlace "Saltar al contenido" y `aria-label` en regiones.
-- `noindex` en páginas que no deben aparecer en buscadores (calculadora, 404 y acceso restringido).
-- `vercel.json` con una regla de reescritura para que Vercel sirva la app al entrar directo a cualquier ruta.
-
-### Etiquetas de `index.html` (18 `<meta>` + 3 elementos)
-
-**Base y autoría**
-
-| Etiqueta | Función |
+| Rama | Uso |
 |---|---|
-| `charset` | Codificación UTF-8 (tildes y ñ). |
-| `viewport` | Diseño adaptable a celulares. |
-| `<title>` | Título de la pestaña y de los resultados. |
-| `description` | Resumen que Google suele mostrar bajo el título. |
-| `author` | Autoría del proyecto. |
-| `theme-color` | Color de la barra del navegador en móviles. |
+| `main` | Producción: solo código estable |
+| `dev` | Integración de las partes del proyecto |
+| `feature/*`, `fix/*`, `refactor/*` | Una rama por cada cambio, con Pull Request hacia `dev` |
 
-**Indexación**
+Los commits siguen la convención Conventional Commits: `feat`, `fix`, `refactor`, `chore`, `docs`.
 
-| Etiqueta | Función |
-|---|---|
-| `robots` (`index, follow`) | Autoriza indexar y seguir enlaces. |
-| `<link rel="canonical">` | URL preferida; evita contenido duplicado. |
-| `<link rel="icon">` | Ícono de pestaña (SVG embebido). |
+## Deploy
 
-**Open Graph** (WhatsApp, Facebook, LinkedIn): `og:type`, `og:site_name`, `og:locale`, `og:title`, `og:description`, `og:url`, `og:image`, `og:image:alt`.
+La aplicación está desplegada en Vercel, que publica automáticamente cada cambio que llega a `main`:
+[https://guardiapp-frontend.vercel.app](https://guardiapp-frontend.vercel.app)
 
-**Twitter / X:** `twitter:card` (`summary_large_image`), `twitter:title`, `twitter:description`, `twitter:image`.
+## Autora
 
-**Datos estructurados:** `<script type="application/ld+json">` con el esquema `WebApplication` de schema.org (categoría de salud, autora e idioma).
-
-### Etiquetas que cambia `Seo.jsx` por ruta
-
-| Etiqueta | Valor |
-|---|---|
-| `<title>` | Título propio de la página + "GuardiasApp" |
-| `description` | Descripción propia de cada ruta |
-| `robots` | `index, follow` o `noindex, nofollow` |
-| `canonical` | URL de la ruta actual |
-| `og:title`, `og:description`, `og:url` | Datos de la ruta |
-| `twitter:title`, `twitter:description` | Datos de la ruta |
-
-## 🌐 Despliegue en Vercel
-
-Vercel detecta Vite automáticamente. La configuración equivale a:
-
-- **Framework preset:** Vite
-- **Build command:** `npm run build`
-- **Output directory:** `dist`
-- `vercel.json` reescribe todas las rutas a `index.html`; sin él, entrar directo a `/equipo` da 404.
-
-Cada Pull Request genera una URL de vista previa y cada merge a `main` publica en producción.
-
-### ⚠️ Antes de publicar
-
-1. Verificá la URL real del proyecto en Vercel (panel *Domains*). Si no es `https://guardiapp-frontend.vercel.app`, reemplazala en `index.html` y en la constante `SITIO` de `src/components/Seo.jsx`.
-2. Agregá la imagen `og-guardiasapp.png` (1200 × 630 px) dentro de `public/`.
-
-## 🔄 Migración desde el repositorio 1
-
-| Repo 1 | Repo 2 |
-|---|---|
-| `index.html` (secciones) | `pages/` y `components/` |
-| `style.css` | `src/index.css` |
-| `main.js` (datos y permisos) | `data/constantes.js` |
-| `main.js` (estado) | `context/` |
-| `main.js` (render con `innerHTML`) | Componentes con `.map()` |
-| `alert`, `confirm`, `prompt` | Toast y modales de React-Bootstrap |
-
+- María José Thompson
